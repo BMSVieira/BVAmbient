@@ -1,7 +1,7 @@
 /*-------------------------
 
-BVAmbient
-https://github.com/BMSVieira/BVAmbient
+BVAmbient - VanillaJS Particle Background
+https://bmsvieira.github.io/BVAmbient/
 
 Made by: Bruno Vieira
 
