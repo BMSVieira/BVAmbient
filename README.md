@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
         particle_radius: 50,
         particle_colision_change: true,
         particle_background: "#58c70c",
-        fps: 30,
+        fps: 30
       });
 });
 ```
