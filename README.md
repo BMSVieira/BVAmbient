@@ -58,7 +58,7 @@ Settings:
 
 ```javascript
 document.addEventListener("DOMContentLoaded", function() {
-      var demo1 = new BVSelect({
+      var demo1 = new BVAmbient({
             selector: "#ambient",
             particle_number: 50,
             particle_maxwidth: 30,
