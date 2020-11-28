@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="BVSelect Jquery">
+  <meta name="author" content="Bruno Vieira">
+
+  <title>BVAmbient</title>
+
+  <!-- BVAmbient Plugin Style -->
+  <link rel="stylesheet" type="text/css" href="css/bvambient.css">
+
+  <!-- *** OPTIONAL *** -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+  <!-- DEMO ONLY -->
+  <link href="demo-template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body style="min-height:1000px; overflow:hidden;">
+  
+    <div class="card my-5 py-4 text-center" style="background-color: rgba(255, 255, 255, 0.9); margin-top: 150px !important; position: absolute; z-index: 9; width: 100%; border-bottom: 1px solid #ececec; border-top: 1px solid #eee;">
+      <p><img style="max-width:500px; width:100%;" src="demo-template/images/BV.png">
+      <br>
+      <a target="_blanK" href="#" class="btn btn-secondary">View on GitHub</a>
+      </p>
+    </div>
+
+    <!-- Ambient Main Div -->
+    <div id="ambient" style="overflow:hidden; position:absolute; width:100%; height:100vh;"></div>
+
+    <script src="js/bvambient.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+          var demo1 = new BVAmbient({
+            selector: "#ambient",
+            particle_number: 50,
+            particle_maxwidth: 30,
+            particle_minwidth: 10,
+            particle_radius: 50,
+            particle_colision_change: true,
+            particle_background: "#58c70c",
+            fps: 30,
+          });
+
+    });
+    </script>
+
+</body>
+
+</html>
