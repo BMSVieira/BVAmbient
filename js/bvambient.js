@@ -17,6 +17,10 @@ class BVAmbient {
         particle_radius = "50",
         particle_colision_change = true,
         particle_background = "#ededed",
+        particle_image = {
+            image: false,
+            src: ""
+        },
         fps = "10"
     }) 
     {
@@ -29,6 +33,7 @@ class BVAmbient {
         this.particle_radius = particle_radius;
         this.particle_colision_change = particle_colision_change;
         this.particle_background = particle_background;
+        this.particle_image = particle_image; 
 
         // Global Variables
         var randomID = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
@@ -39,6 +44,7 @@ class BVAmbient {
         var particle_radius = this.particle_radius;
         var particle_colision_change = this.particle_colision_change;
         var particle_background = this.particle_background;
+        var particle_image = this.particle_image;
 
         this.SetupAmbient = function() {
 
@@ -124,8 +130,13 @@ class BVAmbient {
             // Add number of particles to selector div
             for (var i = 1; i <= this.particle_number; i++) {
 
-                // Append particle to main div
-                document.getElementById(this.selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_"+i+"' class='bvambient_particle' style='display: block;'></div>");
+                // Check if image source is empty and append particle to main div
+                if(this.particle_image['image'] == false)
+                {
+                    document.getElementById(this.selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_"+i+"' class='bvambient_particle' style='display: block;'></div>");  
+                } else {
+                    document.getElementById(this.selector).insertAdjacentHTML('beforeend', "<img src='"+this.particle_image['src']+"' id='bvparticle_"+i+"' class='bvambient_particle' style='display: block;'>");
+                }
 
                 var bvparticle = document.getElementById("bvparticle_"+i);
 
@@ -135,7 +146,6 @@ class BVAmbient {
                 // Get random number based on the width and height of main div
                 var RandomTopPosition = Math.floor(Math.random() * (widthMainDiv.offsetHeight - 40 + 1)) + 0;
                 var RandomLeftPosition = Math.floor(Math.random() * (widthMainDiv.offsetWidth - 40 + 1)) + 0;
-
 
                 // Get random number based on the width and height of main div
                 var RandomWidth = Math.random() * (this.particle_maxwidth - this.particle_minwidth) + this.particle_minwidth;
@@ -150,7 +160,6 @@ class BVAmbient {
 
                 // Call function to move particle
                 MovieParticle(bvparticle);
-           
             }
         }
 
