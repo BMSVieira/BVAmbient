@@ -8,6 +8,13 @@ BVAmbient - Vanilla Javascript Background Particles
 Easy-to-use Particle Background built with VanillaJS
 </p>
 
+Features:
+-
+- 🔧 Fully Customizable HTML
+- 💪 No Dependencies, built with VanillaJS
+- 🌎 Tested in All Modern Browsers
+- 😎 Image Support
+
 Demo:
 -
 https://bmsvieira.github.io/BVAmbient/
@@ -52,7 +59,8 @@ Settings:
 | `particle_maxwidth` | `Integer` | `30` |  Particle's max width (px) |
 | `particle_minwidth` | `Integer` | `10` | Particle's min width (px) |
 | `particle_radius` | `Integer` | `50` | Particle's border radius (px) |
-| `particle_colision_change` | `boolean` | `true` | if the particle changes size when collides with main div's boundary |
+| `particle_colision_change` | `boolean` | `true` | Particle changes size when collides with main div's boundary |
+| `particle_image` | `boolean` | `false` | Add image to particle |
 | `particle_background` | `string` | `#58c70c` | Particle's background color (Hex, Rgba, etc...) |
 | `fps` | `integer` | `30` | Frames per second / velocity |
 
@@ -66,6 +74,10 @@ document.addEventListener("DOMContentLoaded", function() {
             particle_radius: 50,
             particle_colision_change: true,
             particle_background: "#58c70c",
+            particle_image: {
+              image: false,
+              src: ""
+            },
             fps: 30
       });
 });
