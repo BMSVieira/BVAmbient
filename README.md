@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
         particle_radius: 50,
         particle_colision_change: true,
         particle_background: "#58c70c",
-        fps: 30,
+        fps: 30
       });
 });
 ```
@@ -58,7 +58,7 @@ Settings:
 
 ```javascript
 document.addEventListener("DOMContentLoaded", function() {
-      var demo1 = new BVSelect({
+      var demo1 = new BVAmbient({
             selector: "#ambient",
             particle_number: 50,
             particle_maxwidth: 30,
