@@ -21,7 +21,13 @@ class BVAmbient {
             image: false,
             src: ""
         },
-        fps = "10"
+        particle_trail = {
+              trail: false,
+              opacity: "0.1",
+              background: "#58c70c",
+              length: 300
+        },
+        fps = "30"
     }) 
     {
         // Define Variables
@@ -34,6 +40,7 @@ class BVAmbient {
         this.particle_colision_change = particle_colision_change;
         this.particle_background = particle_background;
         this.particle_image = particle_image; 
+        this.particle_trail = particle_trail;
 
         // Global Variables
         var randomID = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
@@ -45,6 +52,7 @@ class BVAmbient {
         var particle_colision_change = this.particle_colision_change;
         var particle_background = this.particle_background;
         var particle_image = this.particle_image;
+        var particle_trail = this.particle_trail;
 
         this.SetupAmbient = function() {
 
@@ -81,6 +89,33 @@ class BVAmbient {
                         // Element offset positioning
                         pos = element.offsetTop; 
                         ver = element.offsetLeft; 
+
+                        // Add trail if active
+                        if(particle_trail["trail"] == true)
+                        {
+                            // Generate new ID for every trail particle
+                            var random_par = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
+
+                            // Append elements to element position
+                            document.getElementById(selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_trail_"+random_par+"' class='bvambient_particle' style='display: block;'></div>");  
+
+                            // Get current width of the element (because it can change when colide)
+                            var positionInfo = element.getBoundingClientRect();
+                            var width = positionInfo.width;
+
+                            // Trail style
+                            var trail_element = document.getElementById("bvparticle_trail_"+random_par);
+                            trail_element.style.top = pos+"px";
+                            trail_element.style.left = ver+"px";
+                            trail_element.style.opacity = particle_trail['opacity'];
+                            trail_element.style.width = width+"px";
+                            trail_element.style.height = width+"px";
+                            trail_element.style.borderRadius = particle_radius+"px";
+                            trail_element.style.backgroundColor = particle_trail['background'];
+
+                            // Set time out function to remove elements
+                            setTimeout(function(){ trail_element.remove(); }, particle_trail['length']);
+                        }
 
                         // Check colision bounds
                         if(pos == rect_main.offsetHeight-element_width) {
