@@ -60,8 +60,9 @@ Settings:
 | `particle_minwidth` | `Integer` | `10` | Particle's min width (px) |
 | `particle_radius` | `Integer` | `50` | Particle's border radius (px) |
 | `particle_colision_change` | `boolean` | `true` | Particle changes size when collides with main div's boundary |
-| `particle_image` | `boolean` | `false` | Add image to particle |
 | `particle_background` | `string` | `#58c70c` | Particle's background color (Hex, Rgba, etc...) |
+| `particle_image` | `boolean` | `false` | Add image to particles |
+| `particle_trail` | `boolean` | `false` | Add trail to particles |
 | `fps` | `integer` | `30` | Frames per second / velocity |
 
 ```javascript
@@ -78,6 +79,12 @@ document.addEventListener("DOMContentLoaded", function() {
               image: false,
               src: ""
             },
+            particle_trail: {
+              trail: true,
+              opacity: "0.1",
+              background: "#58c70c",
+              length: 300
+            },  
             fps: 30
       });
 });
