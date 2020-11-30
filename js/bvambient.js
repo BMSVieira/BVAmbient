@@ -33,7 +33,7 @@ class BVAmbient {
               breakpoint: "default"
             }
         ],
-        fps = "0.5"
+        fps = "3"
     }) 
     {
         // Define Variables
