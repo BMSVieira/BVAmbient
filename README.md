@@ -49,6 +49,15 @@ document.addEventListener("DOMContentLoaded", function() {
       });
 });
 ```
+Methods:
+-
+
+<b>Refresh:</b>
+Removes all current elements and builds a new Ambient
+
+```javascript
+demo1.Refresh();
+```
 
 Settings:
 -

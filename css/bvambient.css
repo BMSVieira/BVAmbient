@@ -8,4 +8,5 @@ Developed by: Bruno Vieira
 .bvambient_particle
 {
 	position: absolute;
+	pointer-events: none;
 }

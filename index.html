@@ -36,11 +36,12 @@
     document.addEventListener("DOMContentLoaded", function() {
           var demo1 = new BVAmbient({
             selector: "#ambient",
-            fps: 30,
-            particle_number: 50,
+            fps: 3,
+            particle_number: 30,
             particle_maxwidth: 30,
             particle_minwidth: 10,
             particle_radius: 50,
+            particle_opacity: true,
             particle_colision_change: true,
             particle_background: "#58c70c",
             particle_image: {
@@ -69,7 +70,6 @@
             ]
           });
     });
-
     </script>
 
 </body>

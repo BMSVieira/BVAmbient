@@ -15,6 +15,7 @@ class BVAmbient {
         particle_maxwidth = "30",
         particle_minwidth = "5",
         particle_radius = "50",
+        particle_opacity = true,
         particle_colision_change = true,
         particle_background = "#ededed",
         particle_image = {
@@ -32,7 +33,7 @@ class BVAmbient {
               breakpoint: "default"
             }
         ],
-        fps = "30"
+        fps = "0.5"
     }) 
     {
         // Define Variables
@@ -47,6 +48,7 @@ class BVAmbient {
         this.particle_image = particle_image; 
         this.particle_trail = particle_trail;
         this.responsive = responsive;
+        this.particle_opacity = particle_opacity;
 
         // Global Variables
         var randomID = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
@@ -60,10 +62,12 @@ class BVAmbient {
         var particle_image = this.particle_image;
         var particle_trail = this.particle_trail;
         var responsive = this.responsive;
+        var particle_opacity = this.particle_opacity;
 
         this.SetupAmbient = function() {
 
             var resp_particles;
+            var setFrame;
 
             function MovieParticle(element)
             {
@@ -83,7 +87,7 @@ class BVAmbient {
                 var rect_main = document.getElementById(selector);
 
                 // Set frame to move particle
-                var setFrame = setInterval(frame, fps);
+                
 
                 function ChangeParticleSize(particle)
                 {
@@ -93,82 +97,93 @@ class BVAmbient {
                     particle.style.height = RandomWidth+"px";
                 }
 
-                function frame() {
+                var framesToSkip = fps, counter = 0;
 
-                        // Element offset positioning
-                        pos = element.offsetTop; 
-                        ver = element.offsetLeft; 
+                function setFrame() {
+                    console.log("deu");
+                    // Count Frames to Loop
+                    if (counter < framesToSkip) { counter++; requestAnimationFrame(setFrame); return; }
 
-                        // Add trail if active
-                        if(particle_trail["trail"] == true)
-                        {
-                            // Generate new ID for every trail particle
-                            var random_par = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
+                    // Element offset positioning
+                    pos = element.offsetTop; 
+                    ver = element.offsetLeft; 
 
-                            // Append elements to element position
-                            document.getElementById(selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_trail_"+random_par+"' class='bvambient_particle' style='display: block;'></div>");  
+                    // Add trail if active
+                    if(particle_trail["trail"] == true)
+                    {
+                        // Generate new ID for every trail particle
+                        var random_par = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
 
-                            // Get current width of the element (because it can change when colide)
-                            var positionInfo = element.getBoundingClientRect();
-                            var width = positionInfo.width;
+                        // Append elements to element position
+                        document.getElementById(selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_trail_"+random_par+"' class='bvambient_particle' style='display: block;'></div>");  
 
-                            // Trail style
-                            var trail_element = document.getElementById("bvparticle_trail_"+random_par);
-                            trail_element.style.top = pos+"px";
-                            trail_element.style.left = ver+"px";
-                            trail_element.style.opacity = particle_trail['opacity'];
-                            trail_element.style.width = width+"px";
-                            trail_element.style.height = width+"px";
-                            trail_element.style.borderRadius = particle_radius+"px";
-                            trail_element.style.backgroundColor = particle_trail['background'];
+                        // Get current width of the element (because it can change when colide)
+                        var positionInfo = element.getBoundingClientRect();
+                        var width = positionInfo.width;
 
-                            // Set time out function to remove elements
-                            setTimeout(function(){ trail_element.remove(); }, particle_trail['length']);
-                        }
+                        // Trail style
+                        var trail_element = document.getElementById("bvparticle_trail_"+random_par);
+                        trail_element.style.top = pos+"px";
+                        trail_element.style.left = ver+"px";
+                        trail_element.style.opacity = particle_trail['opacity'];
+                        trail_element.style.width = width+"px";
+                        trail_element.style.height = width+"px";
+                        trail_element.style.borderRadius = particle_radius+"px";
+                        trail_element.style.backgroundColor = particle_trail['background'];
 
-                        // Check colision bounds
-                        if(pos == rect_main.offsetHeight-element_width) {
-                            d_v = "top";
-                            pos = rect_main.offsetHeight-element_width;
-                            if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                        } 
-                        if(pos <= 0){ 
-                            d_v = "down"; pos = 0; 
-                            if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                        }
-                        if(ver == rect_main.offsetWidth-element_width){ 
-                            d_h = "left";
-                            ver = rect_main.offsetWidth-element_width; 
-                            if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                         } 
-                        if(ver <= 0){ 
-                            d_h = "right";
-                            ver = 0;
-                            if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                        }
-               
-                        // Check Position
-                        if(d_v == "down" && d_h == 'left')
-                        {
-                            element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
-                            element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
-                        }
-                        if(d_v == "down" && d_h == 'right')
-                        {
-                            element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
-                            element.style.left = Number(element.offsetLeft) + Number(1) + "px"; 
-                        }
-                        if(d_v == "top" && d_h == 'left')
-                        {
-                            element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
-                            element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
-                        }
-                        if(d_v == "top" && d_h == 'right') 
-                        {
-                            element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
-                            element.style.left = Number(element.offsetLeft) + Number(1) + "px";  
-                        }  
+                        // Set time out function to remove elements
+                        setTimeout(function(){ trail_element.remove(); }, particle_trail['length']);
+                    }
+
+                    // Check colision bounds
+                    if(pos == rect_main.offsetHeight-element_width) {
+                        d_v = "top";
+                        pos = rect_main.offsetHeight-element_width;
+                        if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                    } 
+                    if(pos <= 0){ 
+                        d_v = "down"; pos = 0; 
+                        if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                    }
+                    if(ver == rect_main.offsetWidth-element_width){ 
+                        d_h = "left";
+                        ver = rect_main.offsetWidth-element_width; 
+                        if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                     } 
+                    if(ver <= 0){ 
+                        d_h = "right";
+                        ver = 0;
+                        if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                    }
+           
+                    // Check Position
+                    if(d_v == "down" && d_h == 'left')
+                    {
+                        element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
+                        element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
+                    }
+                    if(d_v == "down" && d_h == 'right')
+                    {
+                        element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
+                        element.style.left = Number(element.offsetLeft) + Number(1) + "px"; 
+                    }
+                    if(d_v == "top" && d_h == 'left')
+                    {
+                        element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
+                        element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
+                    }
+                    if(d_v == "top" && d_h == 'right') 
+                    {
+                        element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
+                        element.style.left = Number(element.offsetLeft) + Number(1) + "px";  
+                    }  
+
+                    // Call function again
+                    counter = 0;
+                    requestAnimationFrame(setFrame);
                 }
+
+                setFrame();
             }
 
             // Get window viewport inner width
@@ -205,11 +220,15 @@ class BVAmbient {
                 // Get random number based on the width and height of main div
                 var RandomWidth = Math.random() * (this.particle_maxwidth - this.particle_minwidth) + this.particle_minwidth;
 
+                // Get Random Opacity between 0.2 and 1 if active
+                if(particle_opacity == true) { var RandomOpacity = Math.random() * (1 - 0.2) + 0.2; } else { var RandomOpacity = 1; }
+
                 // Add random positioning to particle
                 bvparticle.style.top = RandomTopPosition+Number(0)+"px"; 
                 bvparticle.style.left = RandomLeftPosition+Number(0)+"px"; 
                 bvparticle.style.width = RandomWidth+"px";
                 bvparticle.style.height = RandomWidth+"px";
+                bvparticle.style.opacity = RandomOpacity;                
                 bvparticle.style.borderRadius = particle_radius+"px";
                 bvparticle.style.backgroundColor = particle_background;
 
@@ -222,13 +241,33 @@ class BVAmbient {
         this.SetupAmbient();
     }
 
-    // ** METHODS ** 
+    // ** METHODS **
+    // REFRESH PARTICLES 
     Refresh() {
 
         // Remove all particles
         document.getElementById(this.selector).innerHTML = "";
-        // Setup new particles
+        // Setup new Ambient
         this.SetupAmbient();
-        
+    }
+
+    // DESTROY
+    Destroy() {
+
+        // Remove all particles and unbind all its events
+        document.getElementById(this.selector).remove();
+    }
+
+    // CHANGE PARTICLES
+    Change(properties) {
+
+            // Changes particles according to properties available
+            if(properties.type == "particle_background")
+            {
+                document.querySelectorAll('.bvambient_particle').forEach((item) => {
+                    // Change to chosen color
+                    item.style.backgroundColor = properties.value;
+                });
+            } else { console.log("BVAmbient | Propertie not recognized."); }
     }
 }
