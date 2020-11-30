@@ -76,6 +76,9 @@ Settings:
 | `responsive` | `object` | `default width` | Different settings according to viewport width to improve performance |
 
 ```javascript
+
+/* FULL EXAMPLE */
+
 document.addEventListener("DOMContentLoaded", function() {
       var demo1 = new BVAmbient({
             selector: "#ambient",
