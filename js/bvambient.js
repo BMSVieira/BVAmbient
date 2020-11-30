@@ -50,7 +50,6 @@ class BVAmbient {
 
         // Global Variables
         var randomID = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
-        var resp_particles;
         var selector = this.selector;
         var fps = this.fps;
         var particle_maxwidth = this.particle_maxwidth;
@@ -63,6 +62,8 @@ class BVAmbient {
         var responsive = this.responsive;
 
         this.SetupAmbient = function() {
+
+            var resp_particles;
 
             function MovieParticle(element)
             {
@@ -222,9 +223,12 @@ class BVAmbient {
     }
 
     // ** METHODS ** 
-    Next() {
-    }
-    Previous() {
-    }
+    Refresh() {
 
+        // Remove all particles
+        document.getElementById(this.selector).innerHTML = "";
+        // Setup new particles
+        this.SetupAmbient();
+        
+    }
 }

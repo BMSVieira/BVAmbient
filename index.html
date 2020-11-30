@@ -36,6 +36,7 @@
     document.addEventListener("DOMContentLoaded", function() {
           var demo1 = new BVAmbient({
             selector: "#ambient",
+            fps: 30,
             particle_number: 50,
             particle_maxwidth: 30,
             particle_minwidth: 10,
@@ -56,22 +57,20 @@
                 {
                   breakpoint: 768,
                   settings: {
-                    particle_number: "30"
+                    particle_number: "15"
                   }
                 },
                 {
                   breakpoint: 480,
                   settings: {
-                    particle_number: "15"
+                    particle_number: "10"
                   }
                 }
-            ],
-            fps: 30
+            ]
           });
-
     });
+
     </script>
 
 </body>
-
 </html>
