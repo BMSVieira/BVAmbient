@@ -86,7 +86,7 @@ Settings:
 | Name | Value | Default | Description |
 | --- | --- | --- | --- |
 | `selector` | `String`  | `---` |  Specify ID of the element|
-| `fps` | `Integer` or `Float` | `60` | Frames per second |
+| `fps` | `Integer` | `60` | Frames per second |
 | `particle_number` | `Integer` | `50` |  Number of particles|
 | `particle_maxwidth` | `Integer` | `30` |  Particle's max width (px) |
 | `particle_minwidth` | `Integer` | `10` | Particle's min width (px) |
