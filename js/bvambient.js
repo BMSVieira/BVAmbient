@@ -7,6 +7,8 @@ Made by: Bruno Vieira
 
 --------------------------- */
 
+var isPaused = false;
+
 class BVAmbient {
 
     constructor({
@@ -68,7 +70,6 @@ class BVAmbient {
         this.SetupAmbient = function() {
 
             var resp_particles;
-            var setFrame;
 
             function MovieParticle(element)
             {
@@ -132,49 +133,52 @@ class BVAmbient {
                                 setTimeout(function(){ trail_element.remove(); }, particle_trail['length']);
                             }
 
-                            // Check colision bounds
-                            if(pos == rect_main.offsetHeight-element_width) {
-                                d_v = "top";
-                                pos = rect_main.offsetHeight-element_width;
-                                if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                            } 
-                            if(pos <= 0){ 
-                                d_v = "down"; pos = 0; 
-                                if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                            }
-                            if(ver == rect_main.offsetWidth-element_width){ 
-                                d_h = "left";
-                                ver = rect_main.offsetWidth-element_width; 
-                                if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                             } 
-                            if(ver <= 0){ 
-                                d_h = "right";
-                                ver = 0;
-                                if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                            }
-                   
-                            // Check Position
-                            if(d_v == "down" && d_h == 'left')
+                            // Check if particles are paused or not
+                            if(isPaused == false)
                             {
-                                element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
-                                element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
+                                // Check colision bounds
+                                if(pos == rect_main.offsetHeight-element_width) {
+                                    d_v = "top";
+                                    pos = rect_main.offsetHeight-element_width;
+                                    if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                                } 
+                                if(pos <= 0){ 
+                                    d_v = "down"; pos = 0; 
+                                    if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                                }
+                                if(ver == rect_main.offsetWidth-element_width){ 
+                                    d_h = "left";
+                                    ver = rect_main.offsetWidth-element_width; 
+                                    if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                                 } 
+                                if(ver <= 0){ 
+                                    d_h = "right";
+                                    ver = 0;
+                                    if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                                }
+                       
+                                // Check Position
+                                if(d_v == "down" && d_h == 'left')
+                                {
+                                    element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
+                                    element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
+                                }
+                                if(d_v == "down" && d_h == 'right')
+                                {
+                                    element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
+                                    element.style.left = Number(element.offsetLeft) + Number(1) + "px"; 
+                                }
+                                if(d_v == "top" && d_h == 'left')
+                                {
+                                    element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
+                                    element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
+                                }
+                                if(d_v == "top" && d_h == 'right') 
+                                {
+                                    element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
+                                    element.style.left = Number(element.offsetLeft) + Number(1) + "px";  
+                                }  
                             }
-                            if(d_v == "down" && d_h == 'right')
-                            {
-                                element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
-                                element.style.left = Number(element.offsetLeft) + Number(1) + "px"; 
-                            }
-                            if(d_v == "top" && d_h == 'left')
-                            {
-                                element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
-                                element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
-                            }
-                            if(d_v == "top" && d_h == 'right') 
-                            {
-                                element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
-                                element.style.left = Number(element.offsetLeft) + Number(1) + "px";  
-                            }  
-
                 }
 
                 // Call function for the first time
@@ -253,6 +257,22 @@ class BVAmbient {
         document.getElementById(this.selector).remove();
     }
 
+    // PAUSE
+    Controls(command)
+    {
+        // Check what type of command is
+        switch(command) {
+          case "pause": // Pause Particles moviment
+            isPaused = true;
+            break;
+          case "play": // Resume Particles moviment
+            isPaused = false;
+            break;
+          default:
+            console.log("BVAmbient | Command not recognized.");
+        } 
+    }
+    
     // CHANGE PARTICLES
     Change(properties) {
 
