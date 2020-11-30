@@ -54,6 +54,7 @@ class BVAmbient {
         var randomID = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
         var selector = this.selector;
         var fps = this.fps;
+        var isPlaying = true;
         var particle_maxwidth = this.particle_maxwidth;
         var particle_minwidth = this.particle_minwidth;
         var particle_radius = this.particle_radius;
@@ -86,9 +87,7 @@ class BVAmbient {
                 var pos = 0, ver = 0, element_width = element.offsetWidth; 
                 var rect_main = document.getElementById(selector);
 
-                // Set frame to move particle
-                
-
+                // Change particle size
                 function ChangeParticleSize(particle)
                 {
                     // Get random number based on the width and height of main div
@@ -97,93 +96,89 @@ class BVAmbient {
                     particle.style.height = RandomWidth+"px";
                 }
 
-                var framesToSkip = fps, counter = 0;
+                // Set frame to move particle
+                function SetFrame() {
 
-                function setFrame() {
-                    console.log("deu");
-                    // Count Frames to Loop
-                    if (counter < framesToSkip) { counter++; requestAnimationFrame(setFrame); return; }
+                    if (isPlaying) setTimeout(SetFrame, 1000 / fps);
 
-                    // Element offset positioning
-                    pos = element.offsetTop; 
-                    ver = element.offsetLeft; 
+                            // Element offset positioning
+                            pos = element.offsetTop; 
+                            ver = element.offsetLeft; 
 
-                    // Add trail if active
-                    if(particle_trail["trail"] == true)
-                    {
-                        // Generate new ID for every trail particle
-                        var random_par = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
+                            // Add trail if active
+                            if(particle_trail["trail"] == true)
+                            {
+                                // Generate new ID for every trail particle
+                                var random_par = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
 
-                        // Append elements to element position
-                        document.getElementById(selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_trail_"+random_par+"' class='bvambient_particle' style='display: block;'></div>");  
+                                // Append elements to element position
+                                document.getElementById(selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_trail_"+random_par+"' class='bvambient_particle' style='display: block;'></div>");  
 
-                        // Get current width of the element (because it can change when colide)
-                        var positionInfo = element.getBoundingClientRect();
-                        var width = positionInfo.width;
+                                // Get current width of the element (because it can change when colide)
+                                var positionInfo = element.getBoundingClientRect();
+                                var width = positionInfo.width;
 
-                        // Trail style
-                        var trail_element = document.getElementById("bvparticle_trail_"+random_par);
-                        trail_element.style.top = pos+"px";
-                        trail_element.style.left = ver+"px";
-                        trail_element.style.opacity = particle_trail['opacity'];
-                        trail_element.style.width = width+"px";
-                        trail_element.style.height = width+"px";
-                        trail_element.style.borderRadius = particle_radius+"px";
-                        trail_element.style.backgroundColor = particle_trail['background'];
+                                // Trail style
+                                var trail_element = document.getElementById("bvparticle_trail_"+random_par);
+                                trail_element.style.top = pos+"px";
+                                trail_element.style.left = ver+"px";
+                                trail_element.style.opacity = particle_trail['opacity'];
+                                trail_element.style.width = width+"px";
+                                trail_element.style.height = width+"px";
+                                trail_element.style.borderRadius = particle_radius+"px";
+                                trail_element.style.backgroundColor = particle_trail['background'];
 
-                        // Set time out function to remove elements
-                        setTimeout(function(){ trail_element.remove(); }, particle_trail['length']);
-                    }
+                                // Set time out function to remove elements
+                                setTimeout(function(){ trail_element.remove(); }, particle_trail['length']);
+                            }
 
-                    // Check colision bounds
-                    if(pos == rect_main.offsetHeight-element_width) {
-                        d_v = "top";
-                        pos = rect_main.offsetHeight-element_width;
-                        if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                    } 
-                    if(pos <= 0){ 
-                        d_v = "down"; pos = 0; 
-                        if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                    }
-                    if(ver == rect_main.offsetWidth-element_width){ 
-                        d_h = "left";
-                        ver = rect_main.offsetWidth-element_width; 
-                        if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                     } 
-                    if(ver <= 0){ 
-                        d_h = "right";
-                        ver = 0;
-                        if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
-                    }
-           
-                    // Check Position
-                    if(d_v == "down" && d_h == 'left')
-                    {
-                        element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
-                        element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
-                    }
-                    if(d_v == "down" && d_h == 'right')
-                    {
-                        element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
-                        element.style.left = Number(element.offsetLeft) + Number(1) + "px"; 
-                    }
-                    if(d_v == "top" && d_h == 'left')
-                    {
-                        element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
-                        element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
-                    }
-                    if(d_v == "top" && d_h == 'right') 
-                    {
-                        element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
-                        element.style.left = Number(element.offsetLeft) + Number(1) + "px";  
-                    }  
+                            // Check colision bounds
+                            if(pos == rect_main.offsetHeight-element_width) {
+                                d_v = "top";
+                                pos = rect_main.offsetHeight-element_width;
+                                if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                            } 
+                            if(pos <= 0){ 
+                                d_v = "down"; pos = 0; 
+                                if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                            }
+                            if(ver == rect_main.offsetWidth-element_width){ 
+                                d_h = "left";
+                                ver = rect_main.offsetWidth-element_width; 
+                                if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                             } 
+                            if(ver <= 0){ 
+                                d_h = "right";
+                                ver = 0;
+                                if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                            }
+                   
+                            // Check Position
+                            if(d_v == "down" && d_h == 'left')
+                            {
+                                element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
+                                element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
+                            }
+                            if(d_v == "down" && d_h == 'right')
+                            {
+                                element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
+                                element.style.left = Number(element.offsetLeft) + Number(1) + "px"; 
+                            }
+                            if(d_v == "top" && d_h == 'left')
+                            {
+                                element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
+                                element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
+                            }
+                            if(d_v == "top" && d_h == 'right') 
+                            {
+                                element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
+                                element.style.left = Number(element.offsetLeft) + Number(1) + "px";  
+                            }  
 
-                    // Call function again
-                    counter = 0;
-                    requestAnimationFrame(setFrame);
                 }
 
-                setFrame();
+                // Call function for the first time
+                SetFrame();
             }
 
             // Get window viewport inner width
