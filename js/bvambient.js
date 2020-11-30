@@ -11,7 +11,7 @@ class BVAmbient {
 
     constructor({
         selector = 'defaultId',
-        particle_number = "20",
+        particle_number = "50",
         particle_maxwidth = "30",
         particle_minwidth = "5",
         particle_radius = "50",
@@ -27,6 +27,11 @@ class BVAmbient {
               background: "#58c70c",
               length: 300
         },
+        responsive = [
+            {
+              breakpoint: "default"
+            }
+        ],
         fps = "30"
     }) 
     {
@@ -41,9 +46,11 @@ class BVAmbient {
         this.particle_background = particle_background;
         this.particle_image = particle_image; 
         this.particle_trail = particle_trail;
+        this.responsive = responsive;
 
         // Global Variables
         var randomID = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
+        var resp_particles;
         var selector = this.selector;
         var fps = this.fps;
         var particle_maxwidth = this.particle_maxwidth;
@@ -53,6 +60,7 @@ class BVAmbient {
         var particle_background = this.particle_background;
         var particle_image = this.particle_image;
         var particle_trail = this.particle_trail;
+        var responsive = this.responsive;
 
         this.SetupAmbient = function() {
 
@@ -162,8 +170,19 @@ class BVAmbient {
                 }
             }
 
+            // Get window viewport inner width
+            var windowViewportWidth = window.innerWidth;
+
+            // Loop responsive object to get current viewport
+            for (var loop = 0; loop < responsive.length; loop++) {
+                if(responsive[loop].breakpoint >= windowViewportWidth) { resp_particles = responsive[loop]["settings"].particle_number; }
+            }
+
+            // If there is no result from above, default particles are applied
+            if(resp_particles == undefined) { resp_particles = this.particle_number; }
+
             // Add number of particles to selector div
-            for (var i = 1; i <= this.particle_number; i++) {
+            for (var i = 1; i <= resp_particles; i++) {
 
                 // Check if image source is empty and append particle to main div
                 if(this.particle_image['image'] == false)
