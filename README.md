@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
         particle_radius: 50,
         particle_colision_change: true,
         particle_background: "#58c70c",
-        fps: 30
+        fps: 60
       });
 });
 ```
@@ -86,7 +86,7 @@ Settings:
 | Name | Value | Default | Description |
 | --- | --- | --- | --- |
 | `selector` | `String`  | `---` |  Specify ID of the element|
-| `fps` | `Integer` or `Float` | `3` | Frames per second / velocity - Number of frames particles have to "wait" before going to the next frame |
+| `fps` | `Integer` or `Float` | `60` | Frames per second |
 | `particle_number` | `Integer` | `50` |  Number of particles|
 | `particle_maxwidth` | `Integer` | `30` |  Particle's max width (px) |
 | `particle_minwidth` | `Integer` | `10` | Particle's min width (px) |
