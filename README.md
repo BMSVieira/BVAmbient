@@ -81,6 +81,18 @@ demo1.Change({
 });
 ```
 
+<b>Controls:</b>
+Applies changes to current particles
+
+| Value | Description |
+| --- | --- |
+| `pause` | Pause particle movement |
+| `play` | Resume particle movement |
+
+```javascript
+demo1.Controls("pause");
+```
+
 Settings:
 -
 | Name | Value | Default | Description |
