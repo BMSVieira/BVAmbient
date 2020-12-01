@@ -71,7 +71,17 @@ class BVAmbient {
 
             var resp_particles;
 
-            function MovieParticle(element)
+            // Generates a random hex color
+            function getRandomColor() {
+                  var letters = '0123456789ABCDEF';
+                  var color = '#';
+                  for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                  }
+                  return color;
+            }
+
+            function MoveParticle(element)
             {
                 // Moving Directions
                 var top_down = ['top', "down"];
@@ -89,12 +99,17 @@ class BVAmbient {
                 var rect_main = document.getElementById(selector);
 
                 // Change particle size
-                function ChangeParticleSize(particle)
+                function ChangeParticle(particle)
                 {
+
+                    // Check if random color is enabled, change particle color when colides
+                    if(particle_background == "random") { particle.style.backgroundColor = getRandomColor(); }
+
                     // Get random number based on the width and height of main div
                     var RandomWidth = Math.random() * (particle_maxwidth - particle_minwidth) + particle_minwidth;
                     particle.style.width = RandomWidth+"px";
                     particle.style.height = RandomWidth+"px";
+
                 }
 
                 // Set frame to move particle
@@ -140,21 +155,21 @@ class BVAmbient {
                                 if(pos == rect_main.offsetHeight-element_width) {
                                     d_v = "top";
                                     pos = rect_main.offsetHeight-element_width;
-                                    if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                                    if(particle_colision_change == true) { ChangeParticle(element); } // Change Particle Size on colision
                                 } 
                                 if(pos <= 0){ 
                                     d_v = "down"; pos = 0; 
-                                    if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                                    if(particle_colision_change == true) { ChangeParticle(element); } // Change Particle Size on colision
                                 }
                                 if(ver == rect_main.offsetWidth-element_width){ 
                                     d_h = "left";
                                     ver = rect_main.offsetWidth-element_width; 
-                                    if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                                    if(particle_colision_change == true) { ChangeParticle(element); } // Change Particle Size on colision
                                  } 
                                 if(ver <= 0){ 
                                     d_h = "right";
                                     ver = 0;
-                                    if(particle_colision_change == true) { ChangeParticleSize(element); } // Change Particle Size on colision
+                                    if(particle_colision_change == true) { ChangeParticle(element); } // Change Particle Size on colision
                                 }
                        
                                 // Check Position
@@ -229,10 +244,12 @@ class BVAmbient {
                 bvparticle.style.height = RandomWidth+"px";
                 bvparticle.style.opacity = RandomOpacity;                
                 bvparticle.style.borderRadius = particle_radius+"px";
-                bvparticle.style.backgroundColor = particle_background;
+
+                // Check if it has random color enabled
+                if(particle_background == "random") { bvparticle.style.backgroundColor = getRandomColor(); } else { bvparticle.style.backgroundColor = particle_background; }
 
                 // Call function to move particle
-                MovieParticle(bvparticle);
+                MoveParticle(bvparticle);
             }
         }
 
@@ -272,7 +289,7 @@ class BVAmbient {
             console.log("BVAmbient | Command not recognized.");
         } 
     }
-    
+
     // CHANGE PARTICLES
     Change(properties) {
 
