@@ -8,12 +8,19 @@ BVAmbient - Vanilla Javascript Background Particles
 Easy-to-use Particle Background built with VanillaJS
 </p>
 
+About:
+-
+There are a lot of good particle libraries out there, however, it's hard to find one that doesn't use canvas or jquery... so the challenge was to create high-performance and fully customizable background particles without using either of them both, even know it will have its own limitations.
+
 Features:
 -
-- 🔧 Fully Customizable HTML
+- 🔧 Fully Customizable
 - 💪 No Dependencies, built with VanillaJS
 - 🌎 Tested in All Modern Browsers
 - 😎 Image Support
+- 💻 Responsive
+- 📈 HTML Elements (not canvas)
+
 
 Demo:
 -
