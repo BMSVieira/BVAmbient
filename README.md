@@ -10,7 +10,7 @@ Easy-to-use Particle Background built with VanillaJS
 
 About:
 -
-There are a lot of good particle libraries out there, however, it's hard to find one that doesn't use canvas or jquery... so the challenge was to create high-performance and fully customizable background particles without using either of them both, even knowing it will have limitations of its own.
+There are many good particle libraries out there, however, it's hard to find one that doesn't use canvas or jquery ... so the challenge was to create high-performance, fully customizable background particles without using either, even though you know that will have its own limitations.
 
 Features:
 -
