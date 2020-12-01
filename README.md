@@ -105,7 +105,7 @@ Settings:
 | `particle_radius` | `Integer` | `50` | Particle's border radius (px) 
 | `particle_opacity` | `Boolean` | `true` | Apply random opacity between `0.2` and `1` to particles |
 | `particle_colision_change` | `Boolean` | `true` | Particle changes size when collides with main div's boundary |
-| `particle_background` | `string` | `#58c70c` or `random` | Hex, Rgba, etc..., if "random" generates a random color when loading or colliding |
+| `particle_background` | `string` | `#58c70c` or `random` | `Hex` or `Rgba`, `random` generates a random color when loading or colliding |
 | `particle_image` | `Object` | `false` | Add image to particles |
 | `particle_trail` | `Object` | `false` | Add trail to particles |
 | `responsive` | `Object` | `default width` | Different settings according to viewport width to improve performance |
