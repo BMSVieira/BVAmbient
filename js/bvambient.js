@@ -68,6 +68,8 @@ class BVAmbient {
         var particle_opacity = this.particle_opacity;
         var trail_count = 0;
 
+        var particle_x_ray = [];
+
         // Add movement to particle
         this.MoveParticle = function(element) {
 
@@ -187,7 +189,11 @@ class BVAmbient {
                                     element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
                                     element.style.left = Number(element.offsetLeft) + Number(1) + "px";  
                                 }  
-                            }
+
+                            // Saves particle position to array
+                            particle_x_ray[element.id] = ({'id': element.id, 'x': element.offsetLeft, 'y': element.offsetTop});
+
+                            }          
                 }
 
                 // Call function for the first time
@@ -201,7 +207,7 @@ class BVAmbient {
 
             // Get window viewport inner width
             var windowViewportWidth = window.innerWidth;
-            console.log(number);
+
             // If functions brings no number, it follow the default
             if(number == undefined)
             {
@@ -233,6 +239,9 @@ class BVAmbient {
                 }
 
                 var bvparticle = document.getElementById("bvparticle_"+random_id_particle);
+
+
+                particle_x_ray.push("bvparticle_"+random_id_particle);
 
                 // Get Width and Height of main div
                 var widthMainDiv = document.getElementById(selector);
@@ -275,7 +284,6 @@ class BVAmbient {
               }
               return color;
         }
-
     }
 
     // ** METHODS **
