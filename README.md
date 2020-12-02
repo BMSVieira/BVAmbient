@@ -45,14 +45,17 @@ Installation:
 ```javascript
 document.addEventListener("DOMContentLoaded", function() {
       var demo1 = new BVAmbient({
-        selector: "#ambient",
-        particle_number: 50,
-        particle_maxwidth: 30,
-        particle_minwidth: 10,
-        particle_radius: 50,
-        particle_colision_change: true,
-        particle_background: "#58c70c",
-        fps: 60
+            selector: "#ambient",
+            fps: 60,
+            max_transition_speed: 12000,
+            min_transition_speed: 8000,
+            particle_number: 30,
+            particle_maxwidth: 30,
+            particle_minwidth: 10,
+            particle_radius: 50,
+            particle_opacity: true,
+            particle_colision_change: true,
+            particle_background: "#58c70c"
       });
 });
 ```
@@ -98,24 +101,14 @@ demo1.Change({
 });
 ```
 
-<b>Controls:</b>
-Applies changes to current particles
-
-| Value | Description |
-| --- | --- |
-| `pause` | Pause particle movement |
-| `play` | Resume particle movement |
-
-```javascript
-demo1.Controls("pause");
-```
-
 Settings:
 -
-| Name | Value | Default | Description |
+| Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `selector` | `String`  | `---` |  Specify ID of the element|
 | `fps` | `Integer` | `60` | Frames per second |
+| `max_transition_speed` | `Integer` | `12000` |  Max transition speed (ms)|
+| `min_transition_speed` | `Integer` | `8000` |  Min transition speed (ms)|
 | `particle_number` | `Integer` | `50` |  Number of particles|
 | `particle_maxwidth` | `Integer` | `30` |  Particle's max width (px) |
 | `particle_minwidth` | `Integer` | `10` | Particle's min width (px) |
@@ -124,7 +117,6 @@ Settings:
 | `particle_colision_change` | `Boolean` | `true` | Particle changes size when collides with main div's boundary |
 | `particle_background` | `string` | `#58c70c` or `random` | `Hex` or `Rgba`, `random` generates a random color when loading or colliding |
 | `particle_image` | `Object` | `false` | Add image to particles |
-| `particle_trail` | `Object` | `false` | Add trail to particles |
 | `responsive` | `Object` | `default width` | Different settings according to viewport width to improve performance |
 
 ```javascript
@@ -132,40 +124,36 @@ Settings:
 /* FULL EXAMPLE */
 
 document.addEventListener("DOMContentLoaded", function() {
-        var demo1 = new BVAmbient({
-          selector: "#ambient",
-          fps: 3,
-          particle_number: 30,
-          particle_maxwidth: 30,
-          particle_minwidth: 10,
-          particle_radius: 50,
-          particle_opacity: true,
-          particle_colision_change: true,
-          particle_background: "#58c70c",
-          particle_image: {
-            image: false,
-            src: ""
-          },
-          particle_trail: {
-            trail: false,
-            opacity: "0.1",
-            background: "#58c70c",
-            length: 300
-          },
-          responsive: [
-              {
-                breakpoint: 768,
-                settings: {
-                  particle_number: "15"
-                }
-              },
-              {
-                breakpoint: 480,
-                settings: {
-                  particle_number: "10"
-                }
+      var demo1 = new BVAmbient({
+        selector: "#ambient",
+        fps: 60,
+        max_transition_speed: 12000, // speed will be randomized between max and min
+        min_transition_speed: 8000,
+        particle_number: 30,
+        particle_maxwidth: 30,
+        particle_minwidth: 10,
+        particle_radius: 50,
+        particle_opacity: true,
+        particle_colision_change: true,
+        particle_background: "#58c70c",
+        particle_image: {
+          image: false,
+          src: ""
+        },
+        responsive: [
+            {
+              breakpoint: 768,
+              settings: {
+                particle_number: "15"
               }
-          ]
-        });
+            },
+            {
+              breakpoint: 480,
+              settings: {
+                particle_number: "10"
+              }
+            }
+        ]
+      });
 });
 ```
