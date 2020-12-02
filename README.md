@@ -58,6 +58,16 @@ document.addEventListener("DOMContentLoaded", function() {
 ```
 Methods:
 -
+<b>Add:</b>
+Add new particles
+
+| Value | Description |
+| --- | --- |
+| `Integer` | Number of particles to add |
+
+```javascript
+demo1.Add(5);
+```
 
 <b>Refresh:</b>
 Removes all current elements and builds a new Ambient
