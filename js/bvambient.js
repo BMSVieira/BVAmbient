@@ -66,23 +66,11 @@ class BVAmbient {
         var particle_trail = this.particle_trail;
         var responsive = this.responsive;
         var particle_opacity = this.particle_opacity;
+        var trail_count = 0;
 
-        this.SetupAmbient = function() {
+        // Add movement to particle
+        this.MoveParticle = function(element) {
 
-            var resp_particles;
-
-            // Generates a random hex color
-            function getRandomColor() {
-                  var letters = '0123456789ABCDEF';
-                  var color = '#';
-                  for (var i = 0; i < 6; i++) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                  }
-                  return color;
-            }
-
-            function MoveParticle(element)
-            {
                 // Moving Directions
                 var top_down = ['top', "down"];
                 var left_right = ["left", "right"];
@@ -128,7 +116,7 @@ class BVAmbient {
                                 var random_par = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
 
                                 // Append elements to element position
-                                document.getElementById(selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_trail_"+random_par+"' class='bvambient_particle' style='display: block;'></div>");  
+                                document.getElementById(selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_trail_"+random_par+"' class='trail_bv_particle bvambient_particle' style='display: block;'></div>");  
 
                                 // Get current width of the element (because it can change when colide)
                                 var positionInfo = element.getBoundingClientRect();
@@ -136,6 +124,7 @@ class BVAmbient {
 
                                 // Trail style
                                 var trail_element = document.getElementById("bvparticle_trail_"+random_par);
+                                trail_count++;
                                 trail_element.style.top = pos+"px";
                                 trail_element.style.left = ver+"px";
                                 trail_element.style.opacity = particle_trail['opacity'];
@@ -145,7 +134,12 @@ class BVAmbient {
                                 trail_element.style.backgroundColor = particle_trail['background'];
 
                                 // Set time out function to remove elements
-                                setTimeout(function(){ trail_element.remove(); }, particle_trail['length']);
+                                if(trail_count > 0)
+                                {
+                                    document.querySelectorAll('.trail_bv_particle').forEach(e => e.remove());
+                                    trail_count = 0;
+                                }
+                
                             }
 
                             // Check if particles are paused or not
@@ -198,31 +192,47 @@ class BVAmbient {
 
                 // Call function for the first time
                 SetFrame();
-            }
+        };
+
+        // Set up particles to selector div
+        this.SetupParticles = function(number) {
+
+            var resp_particles;
 
             // Get window viewport inner width
             var windowViewportWidth = window.innerWidth;
+            console.log(number);
+            // If functions brings no number, it follow the default
+            if(number == undefined)
+            {
 
-            // Loop responsive object to get current viewport
-            for (var loop = 0; loop < responsive.length; loop++) {
-                if(responsive[loop].breakpoint >= windowViewportWidth) { resp_particles = responsive[loop]["settings"].particle_number; }
+                // Loop responsive object to get current viewport
+                for (var loop = 0; loop < responsive.length; loop++) {
+                    if(responsive[loop].breakpoint >= windowViewportWidth) { resp_particles = responsive[loop]["settings"].particle_number; }
+                }
+
+                // If there is no result from above, default particles are applied
+                if(resp_particles == undefined) { resp_particles = this.particle_number; }
+
+            } else {
+                resp_particles = number;
             }
-
-            // If there is no result from above, default particles are applied
-            if(resp_particles == undefined) { resp_particles = this.particle_number; }
 
             // Add number of particles to selector div
             for (var i = 1; i <= resp_particles; i++) {
 
+                // Generate random number to particles
+                var random_id_particle = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
+
                 // Check if image source is empty and append particle to main div
                 if(this.particle_image['image'] == false)
                 {
-                    document.getElementById(this.selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_"+i+"' class='bvambient_particle' style='display: block;'></div>");  
+                    document.getElementById(this.selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_"+random_id_particle+"' class='bvambient_particle' style='display: block;'></div>");  
                 } else {
-                    document.getElementById(this.selector).insertAdjacentHTML('beforeend', "<img src='"+this.particle_image['src']+"' id='bvparticle_"+i+"' class='bvambient_particle' style='display: block;'>");
+                    document.getElementById(this.selector).insertAdjacentHTML('beforeend', "<img src='"+this.particle_image['src']+"' id='bvparticle_"+random_id_particle+"' class='bvambient_particle' style='display: block;'>");
                 }
 
-                var bvparticle = document.getElementById("bvparticle_"+i);
+                var bvparticle = document.getElementById("bvparticle_"+random_id_particle);
 
                 // Get Width and Height of main div
                 var widthMainDiv = document.getElementById(selector);
@@ -248,13 +258,24 @@ class BVAmbient {
                 // Check if it has random color enabled
                 if(particle_background == "random") { bvparticle.style.backgroundColor = getRandomColor(); } else { bvparticle.style.backgroundColor = particle_background; }
 
-                // Call function to move particle
-                MoveParticle(bvparticle);
+                // Move particle
+                this.MoveParticle(bvparticle);
             }
         }
 
         // ** SETUP SLIDE **
-        this.SetupAmbient();
+        this.SetupParticles();
+
+        // Generates a random hex color
+        function getRandomColor() {
+              var letters = '0123456789ABCDEF';
+              var color = '#';
+              for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+              }
+              return color;
+        }
+
     }
 
     // ** METHODS **
@@ -264,7 +285,7 @@ class BVAmbient {
         // Remove all particles
         document.getElementById(this.selector).innerHTML = "";
         // Setup new Ambient
-        this.SetupAmbient();
+        this.SetupParticles();
     }
 
     // DESTROY
@@ -272,6 +293,15 @@ class BVAmbient {
 
         // Remove all particles and unbind all its events
         document.getElementById(this.selector).remove();
+    }
+
+    // ADD PARTICLES
+    Add(number) {
+        if(number != undefined)
+        {
+            // Add new particles
+            this.SetupParticles(number);  
+        }
     }
 
     // PAUSE
