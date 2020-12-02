@@ -103,7 +103,7 @@ demo1.Change({
 
 Settings:
 -
-| Name | Value | Default | Description |
+| Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `selector` | `String`  | `---` |  Specify ID of the element|
 | `fps` | `Integer` | `60` | Frames per second |
