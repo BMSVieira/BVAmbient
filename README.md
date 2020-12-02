@@ -118,11 +118,11 @@ Settings:
 | `particle_background` | `string` | `#58c70c` or `random` | `Hex` or `Rgba`, `random` generates a random color when loading or colliding |
 | `particle_image` | `Object` | `false` | Add image to particles |
 | `responsive` | `Object` | `default width` | Different settings according to viewport width to improve performance |
+| `refresh_onfocus` | `Boolean` | `true` | Refresh ambient when user changes tab |
+
+<b>Full Example:</b>
 
 ```javascript
-
-/* FULL EXAMPLE */
-
 document.addEventListener("DOMContentLoaded", function() {
       var demo1 = new BVAmbient({
         selector: "#ambient",
@@ -136,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
         particle_opacity: true,
         particle_colision_change: true,
         particle_background: "#58c70c",
+        refresh_onfocus: true,
         particle_image: {
           image: false,
           src: ""
