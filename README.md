@@ -8,12 +8,19 @@ BVAmbient - Vanilla Javascript Background Particles
 Easy-to-use Particle Background built with VanillaJS
 </p>
 
+About:
+-
+There are many good particle libraries out there, however, it's hard to find one that doesn't use canvas or jquery ... so the challenge was to create high-performance, fully customizable background particles without using either, even though you know that will have its own limitations.
+
 Features:
 -
-- 🔧 Fully Customizable HTML
+- 🔧 Fully Customizable
 - 💪 No Dependencies, built with VanillaJS
 - 🌎 Tested in All Modern Browsers
 - 😎 Image Support
+- 💻 Responsive
+- 📈 HTML Elements (not canvas)
+
 
 Demo:
 -
@@ -51,6 +58,16 @@ document.addEventListener("DOMContentLoaded", function() {
 ```
 Methods:
 -
+<b>Add:</b>
+Add new particles
+
+| Value | Description |
+| --- | --- |
+| `Integer` | Number of particles to add |
+
+```javascript
+demo1.Add(5);
+```
 
 <b>Refresh:</b>
 Removes all current elements and builds a new Ambient
@@ -105,7 +122,7 @@ Settings:
 | `particle_radius` | `Integer` | `50` | Particle's border radius (px) 
 | `particle_opacity` | `Boolean` | `true` | Apply random opacity between `0.2` and `1` to particles |
 | `particle_colision_change` | `Boolean` | `true` | Particle changes size when collides with main div's boundary |
-| `particle_background` | `string` | `#58c70c` | Particle's background color (Hex, Rgba, etc...) |
+| `particle_background` | `string` | `#58c70c` or `random` | `Hex` or `Rgba`, `random` generates a random color when loading or colliding |
 | `particle_image` | `Object` | `false` | Add image to particles |
 | `particle_trail` | `Object` | `false` | Add trail to particles |
 | `responsive` | `Object` | `default width` | Different settings according to viewport width to improve performance |
