@@ -31,7 +31,8 @@ class BVAmbient {
         ],
         fps = "60",
         max_transition_speed = 12000,
-        min_transition_speed = 8000
+        min_transition_speed = 8000,
+        refresh_onfocus = true
     }) 
     {
         // Define Variables
@@ -48,6 +49,7 @@ class BVAmbient {
         this.particle_image = particle_image; 
         this.responsive = responsive;
         this.particle_opacity = particle_opacity;
+        this.refresh_onfocus = refresh_onfocus;
 
         // Global Variables
         var randomID = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
@@ -65,6 +67,7 @@ class BVAmbient {
         var trail_count = 0;
         var max_transition_speed = this.max_transition_speed;
         var min_transition_speed = this.min_transition_speed;
+        var refresh_onfocus = this.refresh_onfocus;
 
         var particle_x_ray = [];
 
@@ -258,11 +261,12 @@ class BVAmbient {
         // ** SETUP SLIDE **
         this.SetupParticles();
 
+        if(refresh_onfocus == true){
         // When user enters tab again refresh position
         document.addEventListener('focus', (e) => {
             document.getElementById(selector).innerHTML = "";
             this.SetupParticles();
-        });
+        });}
 
         // Refresh results
         this.particle_x_ray = particle_x_ray;
