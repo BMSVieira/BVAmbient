@@ -24,31 +24,28 @@ class BVAmbient {
             image: false,
             src: ""
         },
-        particle_trail = {
-              trail: false,
-              opacity: "0.1",
-              background: "#58c70c",
-              length: 300
-        },
         responsive = [
             {
               breakpoint: "default"
             }
         ],
-        fps = "2"
+        fps = "60",
+        max_transition_speed = 12000,
+        min_transition_speed = 8000
     }) 
     {
         // Define Variables
         this.selector = selector.substring(1);
         this.particle_number = particle_number;
         this.fps = fps;
+        this.max_transition_speed = max_transition_speed,
+        this.min_transition_speed = min_transition_speed,
         this.particle_maxwidth = particle_maxwidth;
         this.particle_minwidth = particle_minwidth;
         this.particle_radius = particle_radius;
         this.particle_colision_change = particle_colision_change;
         this.particle_background = particle_background;
         this.particle_image = particle_image; 
-        this.particle_trail = particle_trail;
         this.responsive = responsive;
         this.particle_opacity = particle_opacity;
 
@@ -63,15 +60,18 @@ class BVAmbient {
         var particle_colision_change = this.particle_colision_change;
         var particle_background = this.particle_background;
         var particle_image = this.particle_image;
-        var particle_trail = this.particle_trail;
         var responsive = this.responsive;
         var particle_opacity = this.particle_opacity;
         var trail_count = 0;
+        var max_transition_speed = this.max_transition_speed;
+        var min_transition_speed = this.min_transition_speed;
 
         var particle_x_ray = [];
 
         // Add movement to particle
         this.MoveParticle = function(element) {
+
+                var isresting = 1;
 
                 // Moving Directions
                 var top_down = ['top', "down"];
@@ -111,89 +111,71 @@ class BVAmbient {
                             pos = element.offsetTop; 
                             ver = element.offsetLeft; 
 
-                            // Add trail if active
-                            if(particle_trail["trail"] == true)
-                            {
-                                // Generate new ID for every trail particle
-                                var random_par = Math.floor(Math.random() * (9999 - 0 + 1)) + 0;
-
-                                // Append elements to element position
-                                document.getElementById(selector).insertAdjacentHTML('beforeend', "<div id='bvparticle_trail_"+random_par+"' class='trail_bv_particle bvambient_particle' style='display: block;'></div>");  
-
-                                // Get current width of the element (because it can change when colide)
-                                var positionInfo = element.getBoundingClientRect();
-                                var width = positionInfo.width;
-
-                                // Trail style
-                                var trail_element = document.getElementById("bvparticle_trail_"+random_par);
-                                trail_count++;
-                                trail_element.style.top = pos+"px";
-                                trail_element.style.left = ver+"px";
-                                trail_element.style.opacity = particle_trail['opacity'];
-                                trail_element.style.width = width+"px";
-                                trail_element.style.height = width+"px";
-                                trail_element.style.borderRadius = particle_radius+"px";
-                                trail_element.style.backgroundColor = particle_trail['background'];
-
-                                // Set time out function to remove elements
-                                if(trail_count > 0)
-                                {
-                                    document.querySelectorAll('.trail_bv_particle').forEach(e => e.remove());
-                                    trail_count = 0;
-                                }
-                
-                            }
-
-                            // Check if particles are paused or not
-                            if(isPaused == false)
-                            {
                                 // Check colision bounds
                                 if(pos == rect_main.offsetHeight-element_width) {
                                     d_v = "top";
                                     pos = rect_main.offsetHeight-element_width;
+                                    isresting = 1;
                                     if(particle_colision_change == true) { ChangeParticle(element); } // Change Particle Size on colision
                                 } 
                                 if(pos <= 0){ 
-                                    d_v = "down"; pos = 0; 
+                                    d_v = "down"; 
+                                    pos = 0; 
+                                   isresting = 1;
                                     if(particle_colision_change == true) { ChangeParticle(element); } // Change Particle Size on colision
                                 }
                                 if(ver == rect_main.offsetWidth-element_width){ 
                                     d_h = "left";
                                     ver = rect_main.offsetWidth-element_width; 
-                                    if(particle_colision_change == true) { ChangeParticle(element); } // Change Particle Size on colision
+                                    isresting = 1;
+                                     if(particle_colision_change == true) { ChangeParticle(element); } // Change Particle Size on colision
                                  } 
                                 if(ver <= 0){ 
                                     d_h = "right";
                                     ver = 0;
+                                    isresting = 1;
                                     if(particle_colision_change == true) { ChangeParticle(element); } // Change Particle Size on colision
                                 }
                        
-                                // Check Position
-                                if(d_v == "down" && d_h == 'left')
+                                // It won add another position until the end of transition
+                                if(isresting == 1)
                                 {
-                                    element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
-                                    element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
-                                }
-                                if(d_v == "down" && d_h == 'right')
-                                {
-                                    element.style.top = Number(element.offsetTop) + Number(1) + "px"; 
-                                    element.style.left = Number(element.offsetLeft) + Number(1) + "px"; 
-                                }
-                                if(d_v == "top" && d_h == 'left')
-                                {
-                                    element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
-                                    element.style.left = Number(element.offsetLeft) - Number(1) + "px"; 
-                                }
-                                if(d_v == "top" && d_h == 'right') 
-                                {
-                                    element.style.top = Number(element.offsetTop) - Number(1) + "px"; 
-                                    element.style.left = Number(element.offsetLeft) + Number(1) + "px";  
-                                }  
 
+                                    var RandomTransitionTime = Math.floor(Math.random() * (max_transition_speed - min_transition_speed + 1)) + min_transition_speed;
+                                    element.style.transitionDuration = RandomTransitionTime+"ms";
+
+                                    // Check Position
+                                    if(d_v == "down" && d_h == 'left')
+                                    {
+                                        element.style.left = Number(element.offsetLeft) - Number(300) + "px"; 
+                                        element.style.top = rect_main.offsetHeight-Number(element_width) + "px"; 
+                                        isresting = 0;
+                                    }
+                                    if(d_v == "down" && d_h == 'right')
+                                    {
+                                        element.style.left = Number(element.offsetLeft) + Number(300) + "px"; 
+                                        element.style.top = rect_main.offsetHeight-Number(element_width) + "px"; 
+                                        isresting = 0;
+                                       
+                                    }
+                                    if(d_v == "top" && d_h == 'left')
+                                    {
+                                        element.style.left = Number(element.offsetLeft)-Number(element_width) - Number(300) + "px"; 
+                                        element.style.top = "0px"; 
+                                        isresting = 0;
+                                      
+                                    }
+                                    if(d_v == "top" && d_h == 'right') 
+                                    {
+                                        element.style.left = Number(element.offsetLeft)-Number(element_width) + Number(300) + "px"; 
+                                        element.style.top = "0px"; 
+                                        isresting = 0;
+                                    }  
+                                }
+                             
                             // Saves particle position to array
-                            particle_x_ray[element.id] = ({'id': element.id, 'x': element.offsetLeft, 'y': element.offsetTop});
-
-                            }          
+                            if(element.offsetLeft != 0 && element.offsetTop != 0) { particle_x_ray[element.id] = ({'id': element.id, 'x': element.offsetLeft, 'y': element.offsetTop}); }
+      
                 }
 
                 // Call function for the first time
@@ -204,6 +186,7 @@ class BVAmbient {
         this.SetupParticles = function(number) {
 
             var resp_particles;
+            particle_x_ray = [];
 
             // Get window viewport inner width
             var windowViewportWidth = window.innerWidth;
@@ -240,7 +223,7 @@ class BVAmbient {
 
                 var bvparticle = document.getElementById("bvparticle_"+random_id_particle);
 
-
+                // Add
                 particle_x_ray.push("bvparticle_"+random_id_particle);
 
                 // Get Width and Height of main div
@@ -248,7 +231,7 @@ class BVAmbient {
 
                 // Get random number based on the width and height of main div
                 var RandomTopPosition = Math.floor(Math.random() * (widthMainDiv.offsetHeight - 40 + 1)) + 0;
-                var RandomLeftPosition = Math.floor(Math.random() * (widthMainDiv.offsetWidth - 40 + 1)) + 0;
+                var RandomLeftPosition = Math.floor(Math.random() * (widthMainDiv.offsetWidth - 100 + 1)) + 0;
 
                 // Get random number based on the width and height of main div
                 var RandomWidth = Math.random() * (this.particle_maxwidth - this.particle_minwidth) + this.particle_minwidth;
@@ -257,8 +240,8 @@ class BVAmbient {
                 if(particle_opacity == true) { var RandomOpacity = Math.random() * (1 - 0.2) + 0.2; } else { var RandomOpacity = 1; }
 
                 // Add random positioning to particle
-                bvparticle.style.top = RandomTopPosition+Number(0)+"px"; 
-                bvparticle.style.left = RandomLeftPosition+Number(0)+"px"; 
+                bvparticle.style.top = RandomTopPosition+"px"; 
+                bvparticle.style.left = RandomLeftPosition+"px"; 
                 bvparticle.style.width = RandomWidth+"px";
                 bvparticle.style.height = RandomWidth+"px";
                 bvparticle.style.opacity = RandomOpacity;                
@@ -274,6 +257,15 @@ class BVAmbient {
 
         // ** SETUP SLIDE **
         this.SetupParticles();
+
+        // When user enters tab again refresh position
+        document.addEventListener('focus', (e) => {
+            document.getElementById(selector).innerHTML = "";
+            this.SetupParticles();
+        });
+
+        // Refresh results
+        this.particle_x_ray = particle_x_ray;
 
         // Generates a random hex color
         function getRandomColor() {

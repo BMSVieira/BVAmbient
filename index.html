@@ -37,7 +37,9 @@
           var demo1 = new BVAmbient({
             selector: "#ambient",
             fps: 60,
-            particle_number: 40,
+            max_transition_speed: 12000,
+            min_transition_speed: 8000,
+            particle_number: 30,
             particle_maxwidth: 30,
             particle_minwidth: 10,
             particle_radius: 50,
@@ -47,12 +49,6 @@
             particle_image: {
               image: false,
               src: ""
-            },
-            particle_trail: {
-              trail: true,
-              opacity: "0.1",
-              background: "#58c70c",
-              length: 300
             },
             responsive: [
                 {
